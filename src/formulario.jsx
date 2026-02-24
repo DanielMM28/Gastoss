@@ -8,16 +8,24 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
   const [pagado, setPagado] = useState(false)
   const [fecha, setFecha] = useState("")
 
-  useEffect(() => {
-    if (gastoEditar) {
-      setTitulo(gastoEditar.titulo)
-      setDescripcion(gastoEditar.descripcion)
-      setValor(gastoEditar.valor)
-      setPagado(gastoEditar.pagado)
-      setFecha(gastoEditar.fecha)
-    }
-  }, [gastoEditar])
-
+useEffect(() => {
+  if (gastoEditar) {
+    setTitulo(gastoEditar.titulo || "")
+    setDescripcion(gastoEditar.descripcion || "")
+    setValor(gastoEditar.valor || "")
+    setPagado(gastoEditar.pagado || false)
+    setFecha(gastoEditar.fecha || "")
+  } else {
+    limpiarFormulario()
+  }
+}, [gastoEditar])
+const limpiarFormulario = () => {
+  setTitulo("")
+  setDescripcion("")
+  setValor("")
+  setPagado(false)
+  setFecha("")
+}
   const handleSubmit = async (e) => {
     e.preventDefault()
 
