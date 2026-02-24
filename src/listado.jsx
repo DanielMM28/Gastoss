@@ -60,6 +60,7 @@ function Listado() {
                 <th>Descripción</th>
                 <th>Valor</th>
                 <th>Pagado</th>
+                <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +74,14 @@ function Listado() {
                       ? <span className="badge bg-success">Sí</span>
                       : <span className="badge bg-danger">No</span>}
                   </td>
+                    <td>
+                      <button className="btn btn-sm btn-outline-primary me-2">
+                        Editar
+                      </button>
+                      <button className="btn btn-sm btn-outline-danger">
+                        Eliminar
+                      </button>
+                    </td>
                 </tr>
               ))}
             </tbody>
