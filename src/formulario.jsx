@@ -6,6 +6,7 @@ function Formulario() {
   const [descripcion, setDescripcion] = useState("")
   const [valor, setValor] = useState("")
   const [pagado, setPagado] = useState(false)
+    const [fecha, setFecha] = useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -19,7 +20,7 @@ function Formulario() {
   .schema("public")
   .from("gastos")
   .insert([
-    { titulo, descripcion, valor: Number(valor), pagado }
+    { titulo, descripcion, valor: Number(valor), pagado, fecha }
   ])
 
     if (error) {
@@ -75,6 +76,16 @@ function Formulario() {
               className="form-control"
               value={valor}
               onChange={(e) => setValor(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">fecha *</label>
+            <input
+              type="date"
+              className="form-control"
+              value={fecha}
+              onChange={(e) => setFecha(e.target.value)}
               required
             />
           </div>
