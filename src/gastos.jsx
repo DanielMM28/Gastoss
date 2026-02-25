@@ -51,7 +51,7 @@ function Gastos() {
   return (
     <div className="card shadow-sm p-4 mb-5">
       <h4 className="text-center fw-bold mb-4">
-        Listado de Gastos
+        Listado de Gastos Anual
       </h4>
 
       <h5 className="text-primary text-center">
@@ -77,6 +77,7 @@ function Gastos() {
               <th>Título</th>
               <th>Valor</th>
               <th>Pagado</th>
+              <th>Mes</th>
               <th>Opciones</th>
             </tr>
           </thead>
@@ -88,6 +89,7 @@ function Gastos() {
                 <td>
                   {gasto.pagado ? "Sí" : "No"}
                 </td>
+                <td>{gasto.fecha}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-primary me-2"

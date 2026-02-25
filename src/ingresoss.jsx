@@ -54,7 +54,7 @@ function Ingresos() {
     <>
       <div className="card shadow-sm p-4">
         <h4 className="text-center fw-bold mb-4">
-          Listado de Ingresos
+          Listado de Ingresos Anual
         </h4>
 
         <h5 className="text-success text-center">

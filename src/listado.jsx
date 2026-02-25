@@ -7,7 +7,7 @@ function Listado() {
     <div className="container-fluid px-3 px-md-5 py-4">
 
       <h2 className="text-center mb-4 fw-bold">
-        Mi Presupuesto Mensual
+        Mi Presupuesto Personal
       </h2>
 
    

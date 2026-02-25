@@ -40,35 +40,52 @@ function FormularioIngresos({ mostrar, cerrar, ingresoEditar, recargar }) {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    if (!titulo || !valor || !tableroId) {
-      alert("Completa todos los campos")
-      return
-    }
-
-    const dataIngreso = {
-      Titulo: titulo,
-      descripcion,
-      valor: Number(valor),
-      Tablero: Number(tableroId)
-    }
-
-    if (ingresoEditar) {
-      await supabase
-        .from("ingresos")
-        .update(dataIngreso)
-        .eq("id", ingresoEditar.id)
-    } else {
-      await supabase
-        .from("ingresos")
-        .insert([dataIngreso])
-    }
-
-    limpiarFormulario()
-    cerrar()
-    recargar()
+  if (!titulo || !valor || !tableroId) {
+    alert("Completa todos los campos")
+    return
   }
+
+  const { data: userData } = await supabase.auth.getUser()
+  const user = userData.user
+
+  if (!user) {
+    alert("No hay usuario autenticado")
+    return
+  }
+
+  const dataIngreso = {
+    Titulo: titulo,
+    descripcion,
+    valor: Number(valor),
+    Tablero: Number(tableroId),
+    user_id: user.id   // 🔥 MUY IMPORTANTE
+  }
+
+  let response
+
+  if (ingresoEditar) {
+    response = await supabase
+      .from("ingresos")
+      .update(dataIngreso)
+      .eq("id", ingresoEditar.id)
+  } else {
+    response = await supabase
+      .from("ingresos")
+      .insert([dataIngreso])
+  }
+
+  if (response.error) {
+    console.error(response.error)
+    alert("Error: " + response.error.message)
+    return
+  }
+
+  limpiarFormulario()
+  cerrar()
+  recargar()
+}
 
   if (!mostrar) return null
 

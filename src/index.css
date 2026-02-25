@@ -1,0 +1,38 @@
+/* Fondo general */
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Card */
+.gasto-card {
+  background-color: #1e293b;
+}
+
+/* Header tabla */
+.gasto-header {
+  background-color: #111827;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+}
+
+/* Filas */
+.gasto-row {
+  transition: all 0.2s ease;
+}
+
+.gasto-row:hover {
+  background-color: #1a2436;
+}
+
+/* Botón success personalizado */
+.btn-success {
+  background-color: #22c55e;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #16a34a;
+}

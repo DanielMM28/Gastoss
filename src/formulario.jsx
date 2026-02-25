@@ -52,57 +52,70 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    if (!titulo || !valor || !fecha || !tableroId) {
-      alert("Completa todos los campos obligatorios")
+  if (!titulo || !valor || !fecha || !tableroId) {
+    alert("Completa todos los campos obligatorios")
+    return
+  }
+
+  // 🔥 Obtener usuario actual
+  const { data: userData } = await supabase.auth.getUser()
+  const userId = userData?.user?.id
+
+  if (!userId) {
+    alert("No hay usuario autenticado")
+    return
+  }
+
+  if (gastoEditar) {
+
+    // 🔹 ACTUALIZAR
+    const { error } = await supabase
+      .from("gastos")
+      .update({
+        titulo,
+        descripcion,
+        valor: Number(valor),
+        pagado,
+        fecha,
+        Tablero: Number(tableroId),
+        user_id: userId // 🔥 importante
+      })
+      .eq("id", gastoEditar.id)
+
+    if (error) {
+      console.error("Error actualizando:", error.message)
       return
     }
 
-    if (gastoEditar) {
-      // 🔹 ACTUALIZAR
-      const { error } = await supabase
-        .from("gastos")
-        .update({
+  } else {
+
+    // 🔹 INSERTAR
+    const { error } = await supabase
+      .from("gastos")
+      .insert([
+        {
           titulo,
           descripcion,
           valor: Number(valor),
           pagado,
           fecha,
-          Tablero: Number(tableroId) // 👈 importante
-        })
-        .eq("id", gastoEditar.id)
+          Tablero: Number(tableroId),
+          user_id: userId // 🔥 AQUÍ está lo importante
+        }
+      ])
 
-      if (error) {
-        console.error("Error actualizando:", error.message)
-        return
-      }
-
-    } else {
-      // 🔹 INSERTAR
-      const { error } = await supabase
-        .from("gastos")
-        .insert([
-          {
-            titulo,
-            descripcion,
-            valor: Number(valor),
-            pagado,
-            fecha,
-            Tablero: Number(tableroId) // 👈 importante
-          }
-        ])
-
-      if (error) {
-        console.error("Error insertando:", error.message)
-        return
-      }
+    if (error) {
+      console.error("Error insertando:", error.message)
+      return
     }
-
-    limpiarFormulario()
-    cerrar()
-    recargar()
   }
+
+  limpiarFormulario()
+  cerrar()
+  recargar()
+}
 
   if (!mostrar) return null
 

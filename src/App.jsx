@@ -3,19 +3,48 @@ import Listado from "./listado"
 import Formulario from "./formulario"
 import Tableros from "./tablero"
 import ListadoIngresos from "./foringresos"
-
+import Login from "./login"
+import ProtectedRoute from "./protectedroutes"
 
 function App() {
   return (
-   <Routes>
-  <Route path="/" element={<Listado />} />
-  <Route path="/tablero/:id" element={<Tableros />} />
-  <Route path="/crear" element={<Formulario />} />
+    <Routes>
 
-  <Route path="/editar/:id" element={<Formulario />} />
-  <Route path="/ingresos/:id" element={<ListadoIngresos />} />
-    
-</Routes>
+      {/* Ruta pública */}
+      <Route path="/login" element={<Login />} />
+
+      {/* Rutas protegidas */}
+      <Route path="/" element={
+        <ProtectedRoute>
+          <Listado />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/tablero/:id" element={
+        <ProtectedRoute>
+          <Tableros />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/crear" element={
+        <ProtectedRoute>
+          <Formulario />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/editar/:id" element={
+        <ProtectedRoute>
+          <Formulario />
+        </ProtectedRoute>
+      } />
+
+      <Route path="/ingresos/:id" element={
+        <ProtectedRoute>
+          <ListadoIngresos />
+        </ProtectedRoute>
+      } />
+
+    </Routes>
   )
 }
 
