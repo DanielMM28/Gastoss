@@ -4,8 +4,8 @@ import Ingresos from "./ingresoss"
 import DashboardMensual from "./tablero"
 
 function Listado() {
-  const [mostrarGastos, setMostrarGastos] = useState(true)
-  const [mostrarIngresos, setMostrarIngresos] = useState(true)
+  const [mostrarGastos, setMostrarGastos] = useState(false)
+  const [mostrarIngresos, setMostrarIngresos] = useState(false)
 
   return (
     <div className="container-fluid px-3 px-md-5 py-4">
