@@ -1,4 +1,20 @@
 /* Fondo general */
+:root {
+  --primary: #22C58B;
+  --primary-dark: #18A874;
+  --primary-light: #E9FBF4;
+
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+
+  --income: #22C58B;
+  --expense: #EF4444;
+
+  --border-soft: #E2E8F0;
+}
 body {
   background-color: #ffffff;
   color: #000000;

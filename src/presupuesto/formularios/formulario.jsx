@@ -1,41 +1,44 @@
 import { useState, useEffect } from "react"
-import { supabase } from "./supabaseclient"
+import { supabase } from "../../supabaseclient"
+import "../../app.css"
 
 function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
   const [titulo, setTitulo] = useState("")
   const [descripcion, setDescripcion] = useState("")
   const [valor, setValor] = useState("")
   const [pagado, setPagado] = useState(false)
-  const [fecha, setFecha] = useState("")
   const [tableros, setTableros] = useState([])
   const [tableroId, setTableroId] = useState("")
 
-  // 🔹 Cargar meses (tabla tablero)
+  // ==========================
+  // 🔹 Obtener meses (tableros)
+  // ==========================
   useEffect(() => {
     const obtenerTableros = async () => {
       const { data, error } = await supabase
         .from("tablero")
         .select("*")
+        .order("tablero_id", { ascending: true })
 
       if (error) {
         console.error("Error cargando tableros:", error.message)
       } else {
-        console.log("Tableros cargados:", data)
-        setTableros(data)
+        setTableros(data || [])
       }
     }
 
     obtenerTableros()
   }, [])
 
-  // 🔹 Si estoy editando
+  // ==========================
+  // 🔹 Cargar datos al editar
+  // ==========================
   useEffect(() => {
     if (gastoEditar) {
       setTitulo(gastoEditar.titulo || "")
       setDescripcion(gastoEditar.descripcion || "")
       setValor(gastoEditar.valor || "")
       setPagado(gastoEditar.pagado || false)
-      setFecha(gastoEditar.fecha || "")
       setTableroId(gastoEditar.Tablero || "")
     } else {
       limpiarFormulario()
@@ -47,75 +50,60 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
     setDescripcion("")
     setValor("")
     setPagado(false)
-    setFecha("")
     setTableroId("")
   }
 
+  // ==========================
+  // 🔹 Guardar
+  // ==========================
   const handleSubmit = async (e) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  if (!titulo || !valor || !fecha || !tableroId) {
-    alert("Completa todos los campos obligatorios")
-    return
-  }
-
-  // 🔥 Obtener usuario actual
-  const { data: userData } = await supabase.auth.getUser()
-  const userId = userData?.user?.id
-
-  if (!userId) {
-    alert("No hay usuario autenticado")
-    return
-  }
-
-  if (gastoEditar) {
-
-    // 🔹 ACTUALIZAR
-    const { error } = await supabase
-      .from("gastos")
-      .update({
-        titulo,
-        descripcion,
-        valor: Number(valor),
-        pagado,
-        fecha,
-        Tablero: Number(tableroId),
-        user_id: userId // 🔥 importante
-      })
-      .eq("id", gastoEditar.id)
-
-    if (error) {
-      console.error("Error actualizando:", error.message)
+    if (!titulo || !valor || !tableroId) {
+      alert("Completa todos los campos obligatorios")
       return
     }
 
-  } else {
+    const { data: userData } = await supabase.auth.getUser()
+    const userId = userData?.user?.id
 
-    // 🔹 INSERTAR
-    const { error } = await supabase
-      .from("gastos")
-      .insert([
-        {
-          titulo,
-          descripcion,
-          valor: Number(valor),
-          pagado,
-          fecha,
-          Tablero: Number(tableroId),
-          user_id: userId // 🔥 AQUÍ está lo importante
-        }
-      ])
-
-    if (error) {
-      console.error("Error insertando:", error.message)
+    if (!userId) {
+      alert("No hay usuario autenticado")
       return
     }
-  }
 
-  limpiarFormulario()
-  cerrar()
-  recargar()
-}
+    const dataGasto = {
+      titulo,
+      descripcion,
+      valor: Number(valor),
+      pagado,
+      Tablero: Number(tableroId), // 👈 guardar mes seleccionado
+      user_id: userId
+    }
+
+    let error
+    if (gastoEditar) {
+      const res = await supabase
+        .from("gastos")
+        .update(dataGasto)
+        .eq("id", gastoEditar.id)
+      error = res.error
+    } else {
+      const res = await supabase
+        .from("gastos")
+        .insert([dataGasto])
+      error = res.error
+    }
+
+    if (error) {
+      console.error("Error guardando:", error.message)
+      return
+    }
+
+    limpiarFormulario()
+    cerrar()
+    recargar()
+  }
 
   if (!mostrar) return null
 
@@ -160,30 +148,24 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
                   required
                 />
 
-                
+                {/* 🔹 SELECT DE MES */}
+                <select
+                  className="form-select mb-3"
+                  value={tableroId}
+                  onChange={(e) => setTableroId(e.target.value)}
+                  required
+                >
+                  <option value="">Seleccionar Mes</option>
 
-                {/* 🔹 SELECT MESES */}
-                <div className="mb-3">
-                  <label className="form-label">Mes</label>
-                  <select
-                    className="form-select"
-                    value={tableroId}
-                    onChange={(e) => setTableroId(e.target.value)}
-                    required
-                  >
-                    <option value="">Seleccionar mes</option>
-
-                    {tableros.map((tablero) => (
-                      <option
-                        key={tablero.tablero_id}
-                        value={tablero.tablero_id}
-                      >
-                        {tablero.Descripcion || tablero.descripcion}
-                      </option>
-                    ))}
-
-                  </select>
-                </div>
+                  {tableros.map((tablero) => (
+                    <option
+                      key={tablero.tablero_id}
+                      value={tablero.tablero_id}
+                    >
+                      {tablero.Descripcion}
+                    </option>
+                  ))}
+                </select>
 
                 <div className="form-check">
                   <input
@@ -210,7 +192,7 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
 
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-success"
                 >
                   Guardar
                 </button>

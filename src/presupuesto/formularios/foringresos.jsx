@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
-import { supabase } from "./supabaseclient"
+import { supabase } from "../../supabaseclient"
 
 function FormularioIngresos({ mostrar, cerrar, ingresoEditar, recargar }) {
   const [titulo, setTitulo] = useState("")
   const [descripcion, setDescripcion] = useState("")
   const [valor, setValor] = useState("")
+  const [fecha, setFecha] = useState("")   // 👈 nuevo estado
   const [tableros, setTableros] = useState([])
   const [tableroId, setTableroId] = useState("")
 
@@ -25,7 +26,7 @@ function FormularioIngresos({ mostrar, cerrar, ingresoEditar, recargar }) {
     if (ingresoEditar) {
       setTitulo(ingresoEditar.Titulo || "")
       setDescripcion(ingresoEditar.descripcion || "")
-      setValor(ingresoEditar.valor || "")
+      setValor(ingresoEditar.valor || "")  // 👈 carga fecha si existe
       setTableroId(ingresoEditar.Tablero || "")
     } else {
       limpiarFormulario()
@@ -36,56 +37,58 @@ function FormularioIngresos({ mostrar, cerrar, ingresoEditar, recargar }) {
     setTitulo("")
     setDescripcion("")
     setValor("")
+ 
     setTableroId("")
   }
 
   const handleSubmit = async (e) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  if (!titulo || !valor || !tableroId) {
-    alert("Completa todos los campos")
-    return
+    if (!titulo || !valor || !tableroId) {
+      alert("Completa todos los campos")
+      return
+    }
+
+    const { data: userData } = await supabase.auth.getUser()
+    const user = userData.user
+
+    if (!user) {
+      alert("No hay usuario autenticado")
+      return
+    }
+
+    const dataIngreso = {
+      Titulo: titulo,
+      descripcion,
+      valor: Number(valor),
+                         // 👈 guardar fecha
+      Tablero: Number(tableroId),
+      user_id: user.id
+    }
+
+    let response
+
+    if (ingresoEditar) {
+      response = await supabase
+        .from("ingresos")
+        .update(dataIngreso)
+        .eq("id", ingresoEditar.id)
+    } else {
+      response = await supabase
+        .from("ingresos")
+        .insert([dataIngreso])
+    }
+
+    if (response.error) {
+      console.error(response.error)
+      alert("Error: " + response.error.message)
+      return
+    }
+
+    limpiarFormulario()
+    cerrar()
+    recargar()
   }
-
-  const { data: userData } = await supabase.auth.getUser()
-  const user = userData.user
-
-  if (!user) {
-    alert("No hay usuario autenticado")
-    return
-  }
-
-  const dataIngreso = {
-    Titulo: titulo,
-    descripcion,
-    valor: Number(valor),
-    Tablero: Number(tableroId),
-    user_id: user.id   // 🔥 MUY IMPORTANTE
-  }
-
-  let response
-
-  if (ingresoEditar) {
-    response = await supabase
-      .from("ingresos")
-      .update(dataIngreso)
-      .eq("id", ingresoEditar.id)
-  } else {
-    response = await supabase
-      .from("ingresos")
-      .insert([dataIngreso])
-  }
-
-  if (response.error) {
-    console.error(response.error)
-    alert("Error: " + response.error.message)
-    return
-  }
-
-  limpiarFormulario()
-  cerrar()
-  recargar()
-}
 
   if (!mostrar) return null
 
@@ -95,7 +98,7 @@ function FormularioIngresos({ mostrar, cerrar, ingresoEditar, recargar }) {
         <div className="modal-dialog">
           <div className="modal-content">
 
-            <div className="modal-header bg-success text-white">
+            <div className="modal-header">
               <h5 className="modal-title">
                 {ingresoEditar ? "Editar Ingreso" : "Nuevo Ingreso"}
               </h5>
@@ -129,6 +132,8 @@ function FormularioIngresos({ mostrar, cerrar, ingresoEditar, recargar }) {
                   onChange={(e) => setValor(e.target.value)}
                   required
                 />
+
+               
 
                 <select
                   className="form-select"

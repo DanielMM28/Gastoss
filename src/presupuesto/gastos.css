@@ -1,0 +1,257 @@
+/* Card contenedor */
+.modern-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid #eaecef;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* Header */
+.card-header-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.card-header-modern h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.total-amount {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Botón crear */
+.btn-create {
+  background: #111827;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.btn-create:hover {
+  opacity: 0.85;
+}
+
+/* Tabla moderna */
+.table-modern table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-modern th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: #6c757d;
+  padding-bottom: 12px;
+}
+
+.table-modern td {
+  padding: 14px 0;
+  border-top: 1px solid #f1f3f5;
+  font-size: 14px;
+}
+
+.valor {
+  font-weight: 500;
+}
+
+/* Estados */
+.badge-status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.paid {
+  background: #e6f4ea;
+  color: #198754;
+}
+
+.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* Acciones */
+.actions button {
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-edit {
+  color: #2563eb;
+}
+
+.btn-delete {
+  color: #dc3545;
+}
+
+.actions button:hover {
+  text-decoration: underline;
+}
+/* Variante verde para ingresos */
+.success {
+  color: #198754;
+}
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination-container button {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination-container button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+/* Overlay oscuro */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Caja del modal */
+.modal-confirm {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-confirm h5 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.modal-confirm p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Botones */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+}
+
+.btn-confirm-delete {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #e53935;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-confirm-delete:hover {
+  background: #c62828;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* CONTENEDOR */
+.pagination-mini {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f1f3f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* TEXTO CENTRAL */
+.pagination-info {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* BOTONES */
+.pagination-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #f8f9fa;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Hover */
+.pagination-btn:hover:not(:disabled) {
+  background: #18A874;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(24,168,116,0.3);
+}
+
+/* Disabled */
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

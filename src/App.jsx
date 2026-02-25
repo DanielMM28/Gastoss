@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom"
-import Listado from "./listado"
-import Formulario from "./formulario"
-import Tableros from "./tablero"
-import ListadoIngresos from "./foringresos"
+import Listado from "./presupuesto/listado"
+import Formulario from "./presupuesto/formularios/formulario"
+import Tableros from "./presupuesto/tablero"
+import ListadoIngresos from "./presupuesto/formularios/foringresos"
 import Login from "./login"
 import ProtectedRoute from "./protectedroutes"
+import Dashboard from "./dashboard/dashboard"
+import DashboardMensual from "./presupuesto/tablero"
 
 function App() {
   return (
@@ -16,7 +18,17 @@ function App() {
       {/* Rutas protegidas */}
       <Route path="/" element={
         <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/gastos-ingresos" element={
+        <ProtectedRoute>
           <Listado />
+        </ProtectedRoute>
+      } />
+      <Route path="/mensual" element={
+        <ProtectedRoute>
+          <DashboardMensual />
         </ProtectedRoute>
       } />
 
