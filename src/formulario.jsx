@@ -7,41 +7,99 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
   const [valor, setValor] = useState("")
   const [pagado, setPagado] = useState(false)
   const [fecha, setFecha] = useState("")
+  const [tableros, setTableros] = useState([])
+  const [tableroId, setTableroId] = useState("")
 
-useEffect(() => {
-  if (gastoEditar) {
-    setTitulo(gastoEditar.titulo || "")
-    setDescripcion(gastoEditar.descripcion || "")
-    setValor(gastoEditar.valor || "")
-    setPagado(gastoEditar.pagado || false)
-    setFecha(gastoEditar.fecha || "")
-  } else {
-    limpiarFormulario()
+  // 🔹 Cargar meses (tabla tablero)
+  useEffect(() => {
+    const obtenerTableros = async () => {
+      const { data, error } = await supabase
+        .from("tablero")
+        .select("*")
+
+      if (error) {
+        console.error("Error cargando tableros:", error.message)
+      } else {
+        console.log("Tableros cargados:", data)
+        setTableros(data)
+      }
+    }
+
+    obtenerTableros()
+  }, [])
+
+  // 🔹 Si estoy editando
+  useEffect(() => {
+    if (gastoEditar) {
+      setTitulo(gastoEditar.titulo || "")
+      setDescripcion(gastoEditar.descripcion || "")
+      setValor(gastoEditar.valor || "")
+      setPagado(gastoEditar.pagado || false)
+      setFecha(gastoEditar.fecha || "")
+      setTableroId(gastoEditar.Tablero || "")
+    } else {
+      limpiarFormulario()
+    }
+  }, [gastoEditar])
+
+  const limpiarFormulario = () => {
+    setTitulo("")
+    setDescripcion("")
+    setValor("")
+    setPagado(false)
+    setFecha("")
+    setTableroId("")
   }
-}, [gastoEditar])
-const limpiarFormulario = () => {
-  setTitulo("")
-  setDescripcion("")
-  setValor("")
-  setPagado(false)
-  setFecha("")
-}
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!titulo || !valor || !fecha) return
-
-    if (gastoEditar) {
-      await supabase
-        .from("gastos")
-        .update({ titulo, descripcion, valor, pagado, fecha })
-        .eq("id", gastoEditar.id)
-    } else {
-      await supabase
-        .from("gastos")
-        .insert([{ titulo, descripcion, valor, pagado, fecha }])
+    if (!titulo || !valor || !fecha || !tableroId) {
+      alert("Completa todos los campos obligatorios")
+      return
     }
 
+    if (gastoEditar) {
+      // 🔹 ACTUALIZAR
+      const { error } = await supabase
+        .from("gastos")
+        .update({
+          titulo,
+          descripcion,
+          valor: Number(valor),
+          pagado,
+          fecha,
+          Tablero: Number(tableroId) // 👈 importante
+        })
+        .eq("id", gastoEditar.id)
+
+      if (error) {
+        console.error("Error actualizando:", error.message)
+        return
+      }
+
+    } else {
+      // 🔹 INSERTAR
+      const { error } = await supabase
+        .from("gastos")
+        .insert([
+          {
+            titulo,
+            descripcion,
+            valor: Number(valor),
+            pagado,
+            fecha,
+            Tablero: Number(tableroId) // 👈 importante
+          }
+        ])
+
+      if (error) {
+        console.error("Error insertando:", error.message)
+        return
+      }
+    }
+
+    limpiarFormulario()
     cerrar()
     recargar()
   }
@@ -97,6 +155,29 @@ const limpiarFormulario = () => {
                   required
                 />
 
+                {/* 🔹 SELECT MESES */}
+                <div className="mb-3">
+                  <label className="form-label">Mes</label>
+                  <select
+                    className="form-select"
+                    value={tableroId}
+                    onChange={(e) => setTableroId(e.target.value)}
+                    required
+                  >
+                    <option value="">Seleccionar mes</option>
+
+                    {tableros.map((tablero) => (
+                      <option
+                        key={tablero.tablero_id}
+                        value={tablero.tablero_id}
+                      >
+                        {tablero.Descripcion || tablero.descripcion}
+                      </option>
+                    ))}
+
+                  </select>
+                </div>
+
                 <div className="form-check">
                   <input
                     type="checkbox"
@@ -119,6 +200,7 @@ const limpiarFormulario = () => {
                 >
                   Cancelar
                 </button>
+
                 <button
                   type="submit"
                   className="btn btn-primary"
@@ -126,6 +208,7 @@ const limpiarFormulario = () => {
                   Guardar
                 </button>
               </div>
+
             </form>
 
           </div>
