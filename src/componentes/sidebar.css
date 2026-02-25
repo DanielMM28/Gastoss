@@ -3,7 +3,7 @@
 .sidebar {
   width: 240px;
   height: 100vh;
-  background: #ffffff;
+   background: linear-gradient(360deg, #ffffff,#55dd99);
   color: rgb(0, 0, 0);
   position: fixed;
   top: 0;
@@ -11,6 +11,7 @@
   padding: 25px 15px;
   transition: transform 0.3s ease;
   z-index: 1000;
+  outline: none;
 }
 
 .sidebar-header {

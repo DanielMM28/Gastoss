@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { supabase } from "./supabaseclient"
 import { useNavigate } from "react-router-dom"
+import "./login.css"
 
 function Login() {
 
@@ -22,26 +23,38 @@ function Login() {
   }
 
   return (
-    <div className="container py-5" style={{maxWidth:"400px"}}>
-      <h3 className="text-center mb-4">Iniciar Sesión</h3>
+    <div className="login-wrapper">
 
-      <input
-        type="email"
-        className="form-control mb-3"
-        placeholder="Correo"
-        onChange={(e)=>setEmail(e.target.value)}
-      />
+      <div className="login-card">
 
-      <input
-        type="password"
-        className="form-control mb-3"
-        placeholder="Contraseña"
-        onChange={(e)=>setPassword(e.target.value)}
-      />
+        <div className="login-header">
+         
+          <h3>Forgastos</h3>
+          <p>Gestiona tus finanzas con control y claridad</p>
+        </div>
 
-      <button onClick={login} className="btn btn-dark w-100">
-        Entrar
-      </button>
+        <div className="login-form">
+
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            onChange={(e)=>setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Contraseña"
+            onChange={(e)=>setPassword(e.target.value)}
+          />
+
+          <button onClick={login}>
+            Iniciar Sesión
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
   )
 }

@@ -156,7 +156,6 @@ const toggleSidebar = () => {
 
       <div className="main-section">
         <Navbar toggleSidebar={toggleSidebar} />
-
         <div className="dashboard-content">
 
           {/* 🔹 Cards */}
