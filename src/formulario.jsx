@@ -160,13 +160,7 @@ function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
                   required
                 />
 
-                <input
-                  type="date"
-                  className="form-control mb-3"
-                  value={fecha}
-                  onChange={(e) => setFecha(e.target.value)}
-                  required
-                />
+                
 
                 {/* 🔹 SELECT MESES */}
                 <div className="mb-3">

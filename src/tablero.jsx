@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { supabase } from "./supabaseclient"
 
 function DashboardMensual() {
-
   const [tableros, setTableros] = useState([])
   const [tableroId, setTableroId] = useState("")
   const [gastos, setGastos] = useState([])
@@ -11,7 +10,7 @@ function DashboardMensual() {
   // 🔹 Cargar meses
   useEffect(() => {
     obtenerTableros()
-    obtenerResumenAnual() // 👈 Cargar todo al inicio
+    obtenerResumenAnual()
   }, [])
 
   const obtenerTableros = async () => {
@@ -28,13 +27,37 @@ function DashboardMensual() {
     if (tableroId) {
       obtenerDatos(tableroId)
     } else {
-      obtenerResumenAnual() // 👈 Si no hay mes seleccionado
+      obtenerResumenAnual()
     }
   }, [tableroId])
 
+  // 🔹 Suscripción a cambios en tiempo real
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime-gastos-ingresos")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "gastos" },
+        (payload) => {
+          setGastos(prev => [...prev, payload.new])
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "ingresos" },
+        (payload) => {
+          setIngresos(prev => [...prev, payload.new])
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
   // 🔹 Datos por mes
   const obtenerDatos = async (id) => {
-
     const { data: gastosData } = await supabase
       .from("gastos")
       .select("*")
@@ -51,15 +74,8 @@ function DashboardMensual() {
 
   // 🔹 Resumen anual (sin filtro)
   const obtenerResumenAnual = async () => {
-
-    const { data: gastosData } = await supabase
-      .from("gastos")
-      .select("*")
-
-    const { data: ingresosData } = await supabase
-      .from("ingresos")
-      .select("*")
-
+    const { data: gastosData } = await supabase.from("gastos").select("*")
+    const { data: ingresosData } = await supabase.from("ingresos").select("*")
     setGastos(gastosData || [])
     setIngresos(ingresosData || [])
   }

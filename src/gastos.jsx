@@ -77,7 +77,7 @@ function Gastos() {
               <th>Título</th>
               <th>Valor</th>
               <th>Pagado</th>
-              <th>Mes</th>
+            
               <th>Opciones</th>
             </tr>
           </thead>
@@ -89,7 +89,7 @@ function Gastos() {
                 <td>
                   {gasto.pagado ? "Sí" : "No"}
                 </td>
-                <td>{gasto.fecha}</td>
+                
                 <td>
                   <button
                     className="btn btn-sm btn-primary me-2"
