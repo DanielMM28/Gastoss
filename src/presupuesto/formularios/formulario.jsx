@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../../supabaseclient"
-import "../../app.css"
+import "../../App.css"
 
 function Formulario({ mostrar, cerrar, gastoEditar, recargar }) {
   const [titulo, setTitulo] = useState("")
