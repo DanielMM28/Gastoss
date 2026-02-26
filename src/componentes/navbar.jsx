@@ -12,11 +12,12 @@ export default function Navbar({ toggleSidebar }) {
   const navigate = useNavigate()
 
   // Detectar tamaño pantalla
-  useEffect(() => {
+  useEffect(async () => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
     }
-
+const { data } = await supabase.auth.getUser();
+console.log(data.user.email);
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
@@ -38,6 +39,7 @@ export default function Navbar({ toggleSidebar }) {
     await supabase.auth.signOut()
     navigate("/")
   }
+  
 
   return (
     <div className="navbar">

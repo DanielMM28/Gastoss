@@ -77,8 +77,12 @@
   color: #2563eb;
 }
 
-.text-balance-negative {
+.balance-negative {
   color: #dc2626;
+  background: #fee2e2;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
 }
 
 /* Select minimal */
@@ -167,4 +171,11 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-weight: 500;
 }

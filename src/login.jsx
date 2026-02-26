@@ -2,61 +2,100 @@ import { useState } from "react"
 import { supabase } from "./supabaseclient"
 import { useNavigate } from "react-router-dom"
 import "./login.css"
+import { FiUser } from "react-icons/fi"
 
 function Login() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isRegistering, setIsRegistering] = useState(false)
   const navigate = useNavigate()
 
-  const login = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
+  const handleAuth = async () => {
 
-    if (error) {
-      alert(error.message)
+    if (isRegistering) {
+      // 🔹 REGISTRAR USUARIO
+      const { error } = await supabase.auth.signUp({
+        email,
+        password
+      })
+
+      if (error) {
+        alert(error.message)
+      } else {
+        alert("Usuario creado correctamente ✅")
+      }
+
     } else {
-      navigate("/")
+      // 🔹 INICIAR SESIÓN
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+
+      if (error) {
+        alert(error.message)
+      } else {
+        navigate("/")
+      }
     }
   }
 
   return (
-    <div className="login-wrapper">
+  <div className="login-wrapper">
 
-      <div className="login-card">
+    <div className="login-card">
 
-        <div className="login-header">
-         
-          <h3>Forgastos</h3>
-          <p>Gestiona tus finanzas con control y claridad</p>
+      <div className="login-header">
+        <div className="login-logo">
+          <FiUser size={20} />
         </div>
 
-        <div className="login-form">
+        <h2>
+          {isRegistering ? "Crear cuenta" : "Bienvenido"}
+        </h2>
 
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            onChange={(e)=>setEmail(e.target.value)}
-          />
+        <p>
+          {isRegistering
+            ? "Crea tu cuenta para continuar"
+            : "Inicia sesión en tu cuenta"}
+        </p>
+      </div>
 
-          <input
-            type="password"
-            placeholder="Contraseña"
-            onChange={(e)=>setPassword(e.target.value)}
-          />
+      <div className="login-form">
 
-          <button onClick={login}>
-            Iniciar Sesión
-          </button>
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+        />
 
-        </div>
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+        />
+
+        <button onClick={handleAuth}>
+          {isRegistering ? "Crear Cuenta" : "Entrar"}
+        </button>
 
       </div>
 
+      <div className="login-footer">
+        <span onClick={() => setIsRegistering(!isRegistering)}>
+          {isRegistering
+            ? "¿Ya tienes cuenta? Inicia sesión"
+            : "¿No tienes cuenta? Regístrate"}
+        </span>
+      </div>
+
     </div>
-  )
+
+  </div>
+)
 }
 
 export default Login

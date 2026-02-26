@@ -1,86 +1,28 @@
-/* ===== Sidebar Base ===== */
+/* ===== SIDEBAR BASE ===== */
 
 .sidebar {
-  width: 240px;
+  width: 250px;
   height: 100vh;
-   background: linear-gradient(360deg, #ffffff,#55dd99);
-  color: rgb(0, 0, 0);
+  background: linear-gradient(135deg, #0f5132, #198754);
+  color: white;
   position: fixed;
   top: 0;
   left: 0;
-  padding: 25px 15px;
-  transition: transform 0.3s ease;
+  padding: 28px 18px;
+  transition: transform 0.35s ease;
   z-index: 1000;
-  outline: none;
+  display: flex;
+  flex-direction: column;
 }
+
+/* ===== HEADER ===== */
 
 .sidebar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
-
-.sidebar h4 {
-  margin: 0;
-  font-weight: 700;
-}
-
-.sidebar small {
-  color: #000000;
-}
-
-/* ===== Links ===== */
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  color: #000000;
-  margin-top: 30px;
-}
-
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #000000;
-  transition: 0.2s;
-  margin-top: 20px;
-}
-
-.sidebar-item:hover {
-  background: #c8cacc;
-  color: rgb(0, 0, 0);
-}
-
-.sidebar-item.active {
-  background: #198754;
-  color: white;
-}
-
-/* ===== Close button (mobile) ===== */
-
-.close-btn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: none;
-}
-
-/* ===== Overlay ===== */
-
-.sidebar-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  z-index: 900;
-}
-/* ===== Logo Diseño ===== */
 
 .sidebar-logo {
   display: flex;
@@ -88,35 +30,100 @@
   gap: 12px;
 }
 
+/* ===== LOGO ICON ===== */
+
 .logo-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, #198754, #20c997);
+  width: 45px;
+  height: 45px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff, #d1fae5);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  color: white;
-  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.4);
+  color: #0f5132;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
+
+/* ===== LOGO TEXT ===== */
 
 .logo-text h4 {
   margin: 0;
-  font-weight: 700;
   font-size: 18px;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
 }
 
 .logo-text small {
-  color: #9ca3af;
   font-size: 12px;
+  opacity: 0.75;
 }
-/* ===== Responsive ===== */
+
+/* ===== LINKS ===== */
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 25px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  transition: all 0.25s ease;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* Hover elegante */
+.sidebar-item:hover {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Activo tipo SaaS */
+.sidebar-item.active {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  font-weight: 600;
+}
+
+/* ===== BOTÓN CERRAR ===== */
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  display: none;
+}
+
+/* ===== OVERLAY ===== */
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 900;
+}
+
+/* ===== RESPONSIVE ===== */
 
 @media (max-width: 992px) {
 
   .sidebar {
     transform: translateX(-100%);
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.25);
   }
 
   .sidebar.open {

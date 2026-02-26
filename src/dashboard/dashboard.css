@@ -116,6 +116,18 @@
   flex: 1;
   overflow-x: hidden;
 }
+.card-summary {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.card-summary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.08);
+}
 /* Card minimalista */
 .stat-card {
   background: #ffffff;
