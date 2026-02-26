@@ -12,15 +12,21 @@ export default function Navbar({ toggleSidebar }) {
   const navigate = useNavigate()
 
   // Detectar tamaño pantalla
-  useEffect(async () => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-const { data } = await supabase.auth.getUser();
-console.log(data.user.email);
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 768)
+  }
+
+  const getUser = async () => {
+    const { data } = await supabase.auth.getUser()
+    console.log(data?.user?.email)
+  }
+
+  getUser()
+
+  window.addEventListener("resize", handleResize)
+  return () => window.removeEventListener("resize", handleResize)
+}, [])
 
   // Cerrar dropdown si hace click fuera
   useEffect(() => {
