@@ -66,12 +66,7 @@ export default function Navbar({ toggleSidebar }) {
       {/* 🔹 Derecha */}
       <div className="navbar-actions">
 
-        {!isMobile && (
-          <div className="search-box">
-            <Search size={16} />
-            <input type="text" placeholder="Buscar..." />
-          </div>
-        )}
+      
 
         <button className="icon-btn">
           <Bell size={18} />
