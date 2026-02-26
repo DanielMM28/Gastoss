@@ -11,7 +11,7 @@ function DashboardMensual() {
   const [gastos, setGastos] = useState([])
   const [ingresos, setIngresos] = useState([])
   const [loading, setLoading] = useState(false)
-
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   // 🔹 Paginación
   const [paginaGastos, setPaginaGastos] = useState(1)
   const [paginaIngresos, setPaginaIngresos] = useState(1)
@@ -36,6 +36,10 @@ function DashboardMensual() {
     setTableros(data || [])
   }
 
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen)
+  }
   // ==============================
   // 🔹 Obtener Datos por Mes
   // ==============================
@@ -158,11 +162,11 @@ function DashboardMensual() {
   return (
     <div className="dashboard-layout">
 
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       <div className="main-section">
 
-        <Navbar />
+        <Navbar toggleSidebar={toggleSidebar} />
 
         <div className="dashboard-content">
 

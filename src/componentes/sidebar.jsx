@@ -22,7 +22,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
   <div className="logo-text">
     <h4>Forgastos</h4>
-    <small>Asistente financiero</small>
+    <small styl>Asistente financiero</small>
   </div>
 </div>
           </div>
