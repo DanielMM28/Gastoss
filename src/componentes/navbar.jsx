@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import { supabase } from "../supabaseclient"
 import { useNavigate } from "react-router-dom"
 import "./navbar.css"
-
+import { FiUser } from "react-icons/fi"
 export default function Navbar({ toggleSidebar }) {
 
   const [open, setOpen] = useState(false)
@@ -53,7 +53,7 @@ export default function Navbar({ toggleSidebar }) {
 
         <div>
           <h5 className="mb-0 fw-bold navbar-title">
-            Hola de nuevo, Daniel 👋
+            Bienvenido
           </h5>
           {!isMobile && (
             <small className="text-muted" style={{marginLeft:"20px"}}>
@@ -83,7 +83,7 @@ export default function Navbar({ toggleSidebar }) {
             className="user-avatar"
             onClick={() => setOpen(!open)}
           >
-            DM
+           <FiUser size={20} />
           </div>
 
           {open && (
